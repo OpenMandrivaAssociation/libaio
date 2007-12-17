@@ -18,7 +18,6 @@ Summary: 	Linux-native asynchronous I/O access library
 License: 	LGPL
 Group:	 	System/Libraries
 Source: 	%{name}-%{version}.tar.bz2
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 The Linux-native asynchronous I/O facility ("async I/O", or "aio") has a
