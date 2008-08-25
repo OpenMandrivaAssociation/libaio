@@ -1,21 +1,18 @@
 %define	name	libaio
 %define	version	0.3.104
-%define	release	%mkrel 5
+%define	release	%mkrel 6
 
 %define major	1
 %define	libname	%mklibname aio %major
-%define	libnamedev %{libname}-devel
-
-%if %{mdkversion} < 200610
-%define _requires_exceptions statically\\|linked
-%endif
+%define	libnamedev %mklibname aio -d
+%define	libnamedev_static %mklibname aio -d -s
 
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
 
 Summary: 	Linux-native asynchronous I/O access library
-License: 	LGPL
+License: 	LGPLv2+
 Group:	 	System/Libraries
 Source: 	%{name}-%{version}.tar.bz2
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -47,6 +44,7 @@ Summary:	Development and include files for libaio
 Group:		Development/C
 Requires:	%{libname} = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
+Obsoletes:	%{libname}-devel
 
 %description -n	%{libnamedev}
 The Linux-native asynchronous I/O facility ("async I/O", or "aio") has a
@@ -58,12 +56,13 @@ require the Linux-native async I/O API.
 
 This archive contains the header-files for %{libname} development.
 
-%package -n	%{libname}-static-devel
+%package -n	%{libnamedev_static}
 Summary:	Development components for libaio
 Group:		Development/C
-Requires:	%{libname}-devel = %{version}-%{release}
+Requires:	%{libnamedev} = %{version}-%{release}
+Obsoletes:	%{libname}-static-devel
 
-%description -n	%{libname}-static-devel
+%description -n	%{libnamedev_static}
 The Linux-native asynchronous I/O facility ("async I/O", or "aio") has a
 richer API and capability set than the simple POSIX async I/O facility.
 This library, libaio, provides the Linux-native API for async I/O.
@@ -95,7 +94,7 @@ rm -rf %{buildroot}
 
 %files -n %{libname}
 %defattr(-,root,root)
-%{_libdir}/libaio.so.*
+%{_libdir}/libaio.so.%{major}*
 
 %files -n %{libnamedev}
 %defattr(-,root,root)
@@ -103,7 +102,7 @@ rm -rf %{buildroot}
 %{_includedir}/*
 %{_libdir}/libaio.so
 
-%files -n %{libname}-static-devel
+%files -n %{libnamedev_static}
 %defattr(-,root,root)
 %{_libdir}/libaio.a
 
