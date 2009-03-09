@@ -1,6 +1,6 @@
 %define	name	libaio
-%define	version	0.3.104
-%define	release	%mkrel 6
+%define	version	0.3.107
+%define	release	%mkrel 1
 
 %define major	1
 %define	libname	%mklibname aio %major
@@ -14,7 +14,8 @@ Release:	%{release}
 Summary: 	Linux-native asynchronous I/O access library
 License: 	LGPLv2+
 Group:	 	System/Libraries
-Source: 	%{name}-%{version}.tar.bz2
+Source: 	%{name}-%{version}.tar.gz
+Patch0:		libaio-install-to-slash.patch
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -72,15 +73,34 @@ require the Linux-native async I/O API.
 
 This archive contains the static libraries (.a) 
 
+%define libdir /%{_lib}
+%define usrlibdir %{_prefix}/%{_lib}
+
 %prep
-%setup -q
+%setup -a 0
+%patch0 -p1
+mv %{name}-%{version} compat-%{name}-%{version}
 
 %build
+# A library with a soname of 1.0.0 was inadvertantly released.  This
+# build process builds a version of the library with the broken soname in
+# the compat-libaio-0.3.103 directory, and then builds the library again
+# with the correct soname.
+cd compat-%{name}-%{version}
+%make soname='libaio.so.1.0.0' libname='libaio.so.1.0.0'
+cd ..
 %make
 
 %install
-rm -rf %{buildroot}
-make install prefix=%{buildroot}/usr libdir=%{buildroot}/%{_libdir} root=%{buildroot}
+[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+cd compat-%{name}-%{version}
+install -D -m 755 src/libaio.so.1.0.0 \
+  %{buildroot}/%{_libdir}/libaio.so.1.0.0
+cd ..
+%make destdir=%{buildroot} prefix=/ libdir=%{buildroot}/%{_libdir} usrlibdir=%{usrlibdir} \
+	includedir=%{_includedir} install
+
+rm -rf %{buildroot}/home
 
 %if %mdkversion < 200900
 %post -n %libname -p /sbin/ldconfig
@@ -90,7 +110,7 @@ make install prefix=%{buildroot}/usr libdir=%{buildroot}/%{_libdir} root=%{build
 %endif
 
 %clean
-rm -rf %{buildroot}
+[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
 
 %files -n %{libname}
 %defattr(-,root,root)
