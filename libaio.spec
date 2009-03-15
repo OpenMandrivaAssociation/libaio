@@ -73,34 +73,33 @@ require the Linux-native async I/O API.
 
 This archive contains the static libraries (.a) 
 
-%define libdir /%{_lib}
-%define usrlibdir %{_prefix}/%{_lib}
-
 %prep
-%setup -a 0
-%patch0 -p1
+%setup -q -a 0
+#%patch0 -p1
 mv %{name}-%{version} compat-%{name}-%{version}
 
 %build
+export CFLAGS="%{optflags}"
 # A library with a soname of 1.0.0 was inadvertantly released.  This
 # build process builds a version of the library with the broken soname in
 # the compat-libaio-0.3.103 directory, and then builds the library again
 # with the correct soname.
 cd compat-%{name}-%{version}
-%make soname='libaio.so.1.0.0' libname='libaio.so.1.0.0'
+%make \
+    soname='libaio.so.1.0.0' libname='libaio.so.1.0.0' \
+    CFLAGS="%{optflags} -nostdlib -nostartfiles"
 cd ..
-%make
+%make CFLAGS="%{optflags} -nostdlib -nostartfiles"
 
 %install
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 cd compat-%{name}-%{version}
 install -D -m 755 src/libaio.so.1.0.0 \
   %{buildroot}/%{_libdir}/libaio.so.1.0.0
 cd ..
-%make destdir=%{buildroot} prefix=/ libdir=%{buildroot}/%{_libdir} usrlibdir=%{usrlibdir} \
-	includedir=%{_includedir} install
-
-rm -rf %{buildroot}/home
+%make libdir=%{buildroot}%{_libdir} \
+	includedir=%{buildroot}%{_includedir} \
+    install
 
 %if %mdkversion < 200900
 %post -n %libname -p /sbin/ldconfig
@@ -110,7 +109,7 @@ rm -rf %{buildroot}/home
 %endif
 
 %clean
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files -n %{libname}
 %defattr(-,root,root)
