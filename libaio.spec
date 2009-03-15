@@ -75,7 +75,6 @@ This archive contains the static libraries (.a)
 
 %prep
 %setup -q -a 0
-#%patch0 -p1
 mv %{name}-%{version} compat-%{name}-%{version}
 
 %build
@@ -87,9 +86,9 @@ export CFLAGS="%{optflags}"
 cd compat-%{name}-%{version}
 %make \
     soname='libaio.so.1.0.0' libname='libaio.so.1.0.0' \
-    CFLAGS="%{optflags} -nostdlib -nostartfiles"
+    CFLAGS="%{optflags} -nostdlib -nostartfiles -I. -fPIC"
 cd ..
-%make CFLAGS="%{optflags} -nostdlib -nostartfiles"
+%make CFLAGS="%{optflags} -nostdlib -nostartfiles -I. -fPIC"
 
 %install
 rm -rf %{buildroot}
