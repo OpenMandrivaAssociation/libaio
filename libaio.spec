@@ -1,6 +1,6 @@
 %define	name	libaio
-%define	version	0.3.107
-%define	release	%mkrel 3
+%define	version	0.3.109
+%define	release	%mkrel 1
 
 %define major	1
 %define	libname	%mklibname aio %major
@@ -14,7 +14,7 @@ Release:	%{release}
 Summary: 	Linux-native asynchronous I/O access library
 License: 	LGPLv2+
 Group:	 	System/Libraries
-Source: 	%{name}-%{version}.tar.gz
+Source: 	ftp://ftp.kernel.org/pub/linux/libs/aio/%{name}-%{version}.tar.bz2
 Patch0:		libaio-install-to-slash.patch
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
