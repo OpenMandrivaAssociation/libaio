@@ -1,6 +1,6 @@
 %define	name	libaio
 %define	version	0.3.109
-%define	release	%mkrel 2
+%define	release	%mkrel 3
 
 %define major	1
 %define	libname	%mklibname aio %major
