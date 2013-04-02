@@ -10,6 +10,8 @@ License: 	LGPLv2+
 Group:	 	System/Libraries
 Source0: 	ftp://ftp.kernel.org/pub/linux/libs/aio/%{name}-%{version}.tar.bz2
 Patch0:		libaio-install-to-slash.patch
+Patch1:		libaio-aarch64.patch
+Patch2:		libaio-generic-syscall.patch
 
 %description
 The Linux-native asynchronous I/O facility ("async I/O", or "aio") has a
@@ -47,6 +49,8 @@ This archive contains the header-files for %{name} development.
 %prep
 %setup -q -a 0
 mv %{name}-%{version} compat-%{name}-%{version}
+%patch1 -p1
+%patch2 -p1
 
 %build
 export CFLAGS="%{optflags}"
@@ -57,9 +61,10 @@ export CFLAGS="%{optflags}"
 cd compat-%{name}-%{version}
 %make \
     soname='libaio.so.1.0.0' libname='libaio.so.1.0.0' \
+    CC=%{__cc} \
     CFLAGS="%{optflags} -nostdlib -nostartfiles -I. -fPIC"
 cd ..
-%make CFLAGS="%{optflags} -nostdlib -nostartfiles -I. -fPIC"
+%make CC=%{__cc} CFLAGS="%{optflags} -nostdlib -nostartfiles -I. -fPIC"
 
 %install
 cd compat-%{name}-%{version}
