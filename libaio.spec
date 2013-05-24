@@ -40,8 +40,7 @@ Summary:	Development and include files for libaio
 Group:		Development/C
 Requires:	%{libname} = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
-Obsoletes:	%{libname}-devel
-Obsoletes:	%{_lib}aio-static-devel
+Obsoletes:	%{_lib}aio-static-devel < 0.3.109-5
 
 %description -n	%{devname}
 This archive contains the header-files for %{name} development.
