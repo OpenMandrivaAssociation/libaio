@@ -5,7 +5,7 @@
 Summary: 	Linux-native asynchronous I/O access library
 Name:		libaio
 Version:	0.3.109
-Release:	6
+Release:	7
 License: 	LGPLv2+
 Group:	 	System/Libraries
 Source0: 	ftp://ftp.kernel.org/pub/linux/libs/aio/%{name}-%{version}.tar.bz2
