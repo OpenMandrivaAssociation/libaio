@@ -1,11 +1,12 @@
 %define major 1
 %define libname %mklibname aio %{major}
 %define devname %mklibname aio -d
+%define _disable_lto 1
 
 Summary:	Linux-native asynchronous I/O access library
 Name:		libaio
 Version:	0.3.110
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 Source0:	https://fedorahosted.org/releases/l/i/libaio/%{name}-%{version}.tar.gz
