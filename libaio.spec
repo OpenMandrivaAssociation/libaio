@@ -1,17 +1,17 @@
-%define major	1
-%define	libname	%mklibname aio %{major}
-%define	devname %mklibname aio -d
+%define major 1
+%define libname %mklibname aio %{major}
+%define devname %mklibname aio -d
+%define _disable_lto 1
 
-Summary: 	Linux-native asynchronous I/O access library
+Summary:	Linux-native asynchronous I/O access library
 Name:		libaio
-Version:	0.3.109
-Release:	15
-License: 	LGPLv2+
-Group:	 	System/Libraries
-Source0: 	ftp://ftp.kernel.org/pub/linux/libs/aio/%{name}-%{version}.tar.bz2
-Patch0:		libaio-install-to-slash.patch
-Patch1:		libaio-aarch64.patch
-Patch2:		libaio-generic-syscall.patch
+Version:	0.3.110
+Release:	2
+License:	LGPLv2+
+Group:		System/Libraries
+Source0:	https://fedorahosted.org/releases/l/i/libaio/%{name}-%{version}.tar.gz
+Patch0:		libaio-install-to-destdir-slash-usr.patch
+#Patch1:		libaio-aarch64.patch
 
 %description
 The Linux-native asynchronous I/O facility ("async I/O", or "aio") has a
@@ -22,10 +22,10 @@ kernel-accelerated async I/O capabilities, as do applications which
 require the Linux-native async I/O API.
 You may require this package if you want to install some DBMS.
 
-%package -n     %{libname}
-Summary:        Dynamic libraries for libaio
-Group:          System/Libraries
-Provides:	%{name} = %{version}-%{release}
+%package -n %{libname}
+Summary:	Dynamic libraries for libaio
+Group:		System/Libraries
+Provides:	%{name} = %{EVRD}
 
 %description -n %{libname}
 The Linux-native asynchronous I/O facility ("async I/O", or "aio") has a
@@ -35,11 +35,11 @@ The POSIX async I/O facility requires this library in order to provide
 kernel-accelerated async I/O capabilities, as do applications which
 require the Linux-native async I/O API.
 
-%package -n	%{devname}
+%package -n %{devname}
 Summary:	Development and include files for libaio
 Group:		Development/C
-Requires:	%{libname} = %{version}-%{release}
-Provides:	%{name}-devel = %{version}-%{release}
+Requires:	%{libname} = %{EVRD}
+Provides:	%{name}-devel = %{EVRD}
 Obsoletes:	%{_lib}aio-static-devel < 0.3.109-5
 
 %description -n	%{devname}
@@ -47,21 +47,17 @@ This archive contains the header-files for %{name} development.
 
 %prep
 %setup -q -a 0
+%apply_patches
 mv %{name}-%{version} compat-%{name}-%{version}
-%patch1 -p1
-%patch2 -p1
 
 %build
-export CFLAGS="%{optflags}"
+%setup_compile_flags
 # A library with a soname of 1.0.0 was inadvertantly released.  This
 # build process builds a version of the library with the broken soname in
 # the compat-libaio-0.3.103 directory, and then builds the library again
 # with the correct soname.
 cd compat-%{name}-%{version}
-%make \
-    soname='libaio.so.1.0.0' libname='libaio.so.1.0.0' \
-    CC=%{__cc} \
-    CFLAGS="%{optflags} -nostdlib -nostartfiles -I. -fPIC"
+%make CC=%{__cc} CFLAGS="%{optflags} -nostdlib -nostartfiles -I. -fPIC" soname='libaio.so.1.0.0' libname='libaio.so.1.0.0'
 cd ..
 %make CC=%{__cc} CFLAGS="%{optflags} -nostdlib -nostartfiles -I. -fPIC"
 
@@ -70,11 +66,10 @@ cd compat-%{name}-%{version}
 install -D -m 755 src/libaio.so.1.0.0 \
   %{buildroot}/%{_libdir}/libaio.so.1.0.0
 cd ..
-%make libdir=%{buildroot}%{_libdir} \
-	includedir=%{buildroot}%{_includedir} \
-    install
+make destdir=%{buildroot} prefix=/ libdir=%{libdir} usrlibdir=%{_libdir} \
+    includedir=%{_includedir} install
 
-rm -f %{buildroot}%{_libdir}/*.a
+find %{buildroot} -name '*.a' -delete
 
 %files -n %{libname}
 %{_libdir}/libaio.so.%{major}*
@@ -83,4 +78,3 @@ rm -f %{buildroot}%{_libdir}/*.a
 %doc COPYING TODO
 %{_includedir}/*
 %{_libdir}/libaio.so
-
