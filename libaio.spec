@@ -5,13 +5,12 @@
 
 Summary:	Linux-native asynchronous I/O access library
 Name:		libaio
-Version:	0.3.110
-Release:	2
+Version:	0.3.111
+Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
 Source0:	https://fedorahosted.org/releases/l/i/libaio/%{name}-%{version}.tar.gz
 Patch0:		libaio-install-to-destdir-slash-usr.patch
-#Patch1:		libaio-aarch64.patch
 
 %description
 The Linux-native asynchronous I/O facility ("async I/O", or "aio") has a
