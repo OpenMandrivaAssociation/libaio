@@ -1,8 +1,6 @@
 %define major 1
 %define libname %mklibname aio %{major}
 %define devname %mklibname aio -d
-%define _disable_lto 1
-%global optflags %{optflags} --rtlib=compiler-rt
 
 Summary:	Linux-native asynchronous I/O access library
 Name:		libaio
