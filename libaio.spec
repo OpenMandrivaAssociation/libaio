@@ -2,7 +2,7 @@
 %define libname %mklibname aio %{major}
 %define devname %mklibname aio -d
 %define _disable_lto 1
-%define _disable_ld_as_needed 1
+%global optflags %{optflags} --rtlib=compiler-rt
 
 Summary:	Linux-native asynchronous I/O access library
 Name:		libaio
@@ -42,7 +42,7 @@ Requires:	%{libname} = %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
 Obsoletes:	%{_lib}aio-static-devel < 0.3.109-5
 
-%description -n	%{devname}
+%description -n %{devname}
 This archive contains the header-files for %{name} development.
 
 %prep
