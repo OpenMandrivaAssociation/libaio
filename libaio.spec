@@ -1,11 +1,12 @@
 %define major 1
 %define libname %mklibname aio %{major}
 %define devname %mklibname aio -d
+%define staticname %mklibname aio -d -s
 
 Summary:	Linux-native asynchronous I/O access library
 Name:		libaio
 Version:	0.3.111
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 Source0:	https://fedorahosted.org/releases/l/i/libaio/%{name}-%{version}.tar.gz
@@ -38,10 +39,19 @@ Summary:	Development and include files for libaio
 Group:		Development/C
 Requires:	%{libname} = %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
-Obsoletes:	%{_lib}aio-static-devel < 0.3.109-5
 
 %description -n %{devname}
 This archive contains the header-files for %{name} development.
+
+# The static library is used by lvm2.
+# Don't stop building it unless you drop its use there first.
+%package -n %{staticname}
+Summary:	Static library files for libaio
+Group:		Development/C
+Requires:	%{devname} = %{EVRD}
+
+%description -n %{staticname}
+This archive contains the static library files for %{name} development.
 
 %prep
 %setup -q -a 0
@@ -66,8 +76,6 @@ cd ..
 make destdir=%{buildroot} prefix=/ libdir=%{libdir} usrlibdir=%{_libdir} \
     includedir=%{_includedir} install
 
-find %{buildroot} -name '*.a' -delete
-
 %files -n %{libname}
 %{_libdir}/libaio.so.%{major}*
 
@@ -75,3 +83,6 @@ find %{buildroot} -name '*.a' -delete
 %doc COPYING TODO
 %{_includedir}/*
 %{_libdir}/libaio.so
+
+%files -n %{staticname}
+%{_libdir}/libaio.a
