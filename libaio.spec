@@ -12,7 +12,8 @@ Version:	0.3.111
 Release:	6
 License:	LGPLv2+
 Group:		System/Libraries
-Source0:	https://fedorahosted.org/releases/l/i/libaio/%{name}-%{version}.tar.gz
+Url:		https://pagure.io/libaio
+Source0:	https://pagure.io/libaio/archive/libaio-%{version}/%{name}-%{version}.tar.gz
 Patch0:		libaio-install-to-destdir-slash-usr.patch
 Patch1:		libaio-remove-nostartfiles-nostdlib-from-build-flags.patch
 

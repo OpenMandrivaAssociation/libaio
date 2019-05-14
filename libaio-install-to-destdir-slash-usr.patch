@@ -1,6 +1,6 @@
-diff -up libaio-0.3.110/src/Makefile.orig libaio-0.3.110/src/Makefile
---- libaio-0.3.110/src/Makefile.orig	2014-03-05 09:32:55.683632263 -0500
-+++ libaio-0.3.110/src/Makefile	2014-03-05 09:34:05.836297667 -0500
+diff -up libaio-0.3.111/src/Makefile.orig libaio-0.3.111/src/Makefile
+--- libaio-0.3.111/src/Makefile.orig	2018-03-06 17:24:47.000000000 -0500
++++ libaio-0.3.111/src/Makefile	2018-03-07 10:44:49.148004447 -0500
 @@ -53,11 +53,11 @@ $(libname): $(libaio_sobjs) libaio.map
  	$(CC) $(SO_CFLAGS) -Wl,--version-script=libaio.map -Wl,-soname=$(soname) -o $@ $(libaio_sobjs) $(LINK_FLAGS)
  
