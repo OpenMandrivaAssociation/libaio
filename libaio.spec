@@ -6,7 +6,7 @@
 Summary:	Linux-native asynchronous I/O access library
 Name:		libaio
 Version:	0.3.111
-Release:	4
+Release:	5
 License:	LGPLv2+
 Group:		System/Libraries
 Source0:	https://fedorahosted.org/releases/l/i/libaio/%{name}-%{version}.tar.gz
@@ -54,19 +54,19 @@ Requires:	%{devname} = %{EVRD}
 This archive contains the static library files for %{name} development.
 
 %prep
-%setup -q -a 0
-%apply_patches
+%autosetup -a 0 -p1
 mv %{name}-%{version} compat-%{name}-%{version}
 
 %build
+%setup_compile_flags
 # A library with a soname of 1.0.0 was inadvertantly released.  This
 # build process builds a version of the library with the broken soname in
 # the compat-libaio-0.3.103 directory, and then builds the library again
 # with the correct soname.
 cd compat-%{name}-%{version}
-%make CC=%{__cc} CFLAGS="-Os -pipe -nostdlib -nostartfiles -I. -fPIC" soname='libaio.so.1.0.0' libname='libaio.so.1.0.0'
+%make_build CC=%{__cc} CFLAGS="-Os -pipe -nostdlib -nostartfiles -I. -fPIC" soname='libaio.so.1.0.0' libname='libaio.so.1.0.0'
 cd ..
-%make CC=%{__cc} CFLAGS="-Os -pipe -nostdlib -nostartfiles -I. -fPIC"
+%make_build CC=%{__cc} CFLAGS="-Os -pipe -nostdlib -nostartfiles -I. -fPIC"
 
 %install
 cd compat-%{name}-%{version}
