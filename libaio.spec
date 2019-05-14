@@ -14,6 +14,7 @@ License:	LGPLv2+
 Group:		System/Libraries
 Source0:	https://fedorahosted.org/releases/l/i/libaio/%{name}-%{version}.tar.gz
 Patch0:		libaio-install-to-destdir-slash-usr.patch
+Patch1:		libaio-remove-nostartfiles-nostdlib-from-build-flags.patch
 
 %description
 The Linux-native asynchronous I/O facility ("async I/O", or "aio") has a
