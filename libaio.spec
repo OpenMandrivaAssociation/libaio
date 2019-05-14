@@ -5,11 +5,12 @@
 # (tpg) 2019-05-14
 # BUILDSTDERR: io_getevents.os:io_getevents.c:function __io_getevents_0_4: error: undefined reference to '__errno_location'
 %define _disable_ld_no_undefined 1
+%define _disable_lto 1
 
 Summary:	Linux-native asynchronous I/O access library
 Name:		libaio
 Version:	0.3.111
-Release:	6
+Release:	7
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		https://pagure.io/libaio
