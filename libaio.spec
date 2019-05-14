@@ -4,7 +4,7 @@
 %define staticname %mklibname aio -d -s
 # (tpg) 2019-05-14
 # BUILDSTDERR: io_getevents.os:io_getevents.c:function __io_getevents_0_4: error: undefined reference to '__errno_location'
-%define _disable_lto 1
+%define _disable_ld_no_undefined 1
 
 Summary:	Linux-native asynchronous I/O access library
 Name:		libaio
