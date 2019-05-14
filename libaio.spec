@@ -59,10 +59,10 @@ This archive contains the static library files for %{name} development.
 
 %prep
 %setup -q -a 0
-%patch1 -p0 -b .install-to-destdir-slash-usr
-%patch1 -p1 -b .install-to-destdir-slash-usr
-%patch2 -p0 -b .nostdlib
-%patch2 -p1 -b .nostdlib
+%patch0 -p0 -b .install-to-destdir-slash-usr
+%patch0 -p1 -b .install-to-destdir-slash-usr
+%patch1 -p0 -b .nostdlib
+%patch1 -p1 -b .nostdlib
 
 mv %{name}-%{version} compat-%{name}-%{version}
 
