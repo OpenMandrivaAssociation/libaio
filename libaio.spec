@@ -75,9 +75,9 @@ mv %{name}-%{version} compat-%{name}-%{version}
 # the compat-libaio-0.3.103 directory, and then builds the library again
 # with the correct soname.
 cd compat-%{name}-%{version}
-%make_build CC=%{__cc} CFLAGS="%{optflags}" LDFLAGS="${ldflags}" soname='libaio.so.1.0.0' libname='libaio.so.1.0.0'
+%make_build CC=%{__cc} CFLAGS="%{optflags} -Wall -I. -fPIC" LDFLAGS="${ldflags}" soname='libaio.so.1.0.0' libname='libaio.so.1.0.0'
 cd ..
-%make_build CC=%{__cc} CFLAGS="%{optflags}" LDFLAGS="${ldflags}"
+%make_build CC=%{__cc} CFLAGS="%{optflags} -Wall -I. -fPIC" LDFLAGS="${ldflags}"
 
 %install
 cd compat-%{name}-%{version}
