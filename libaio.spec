@@ -10,7 +10,7 @@
 Summary:	Linux-native asynchronous I/O access library
 Name:		libaio
 Version:	0.3.111
-Release:	7
+Release:	8
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		https://pagure.io/libaio
@@ -75,9 +75,9 @@ mv %{name}-%{version} compat-%{name}-%{version}
 # the compat-libaio-0.3.103 directory, and then builds the library again
 # with the correct soname.
 cd compat-%{name}-%{version}
-%make_build CC=%{__cc} CFLAGS="-Os -pipe -nostdlib -nostartfiles -I. -fPIC" soname='libaio.so.1.0.0' libname='libaio.so.1.0.0'
+%make_build CC=%{__cc} CFLAGS="%{optflags}" soname='libaio.so.1.0.0' libname='libaio.so.1.0.0'
 cd ..
-%make_build CC=%{__cc} CFLAGS="-Os -pipe -nostdlib -nostartfiles -I. -fPIC"
+%make_build CC=%{__cc} CFLAGS="%{optflags}"
 
 %install
 cd compat-%{name}-%{version}
