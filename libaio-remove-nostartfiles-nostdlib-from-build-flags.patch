@@ -7,7 +7,7 @@ index eadb336..5911c81 100644
  
  CFLAGS ?= -g -fomit-frame-pointer -O2
 -CFLAGS += -nostdlib -nostartfiles -Wall -I. -fPIC
-+CFLAGS += $(CFLAGS) -Wall -I. -fPIC
++CFLAGS += -Wall -I. -fPIC
  SO_CFLAGS=-shared $(CFLAGS)
  L_CFLAGS=$(CFLAGS)
  LINK_FLAGS=
