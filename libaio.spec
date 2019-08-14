@@ -5,13 +5,12 @@
 
 Summary:	Linux-native asynchronous I/O access library
 Name:		libaio
-Version:	0.3.111
-Release:	8
+Version:	0.3.112
+Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		https://pagure.io/libaio
 Source0:	https://pagure.io/libaio/archive/libaio-%{version}/%{name}-%{version}.tar.gz
-Patch0:		libaio-install-to-destdir-slash-usr.patch
 Patch1:		libaio-remove-nostartfiles-nostdlib-from-build-flags.patch
 
 %description
@@ -57,10 +56,6 @@ This archive contains the static library files for %{name} development.
 
 %prep
 %setup -q -a 0
-%patch0 -p0 -b .install-to-destdir-slash-usr
-%patch0 -p1 -b .install-to-destdir-slash-usr
-%patch1 -p0 -b .nostdlib
-%patch1 -p1 -b .nostdlib
 
 mv %{name}-%{version} compat-%{name}-%{version}
 
@@ -71,17 +66,18 @@ mv %{name}-%{version} compat-%{name}-%{version}
 # the compat-libaio-0.3.103 directory, and then builds the library again
 # with the correct soname.
 cd compat-%{name}-%{version}
-%make_build CC=%{__cc} CFLAGS="%{optflags} -Wall -I. -fPIC" LDFLAGS="${ldflags}" soname='libaio.so.1.0.0' libname='libaio.so.1.0.0'
+%make_build CC=%{__cc} CFLAGS="%{optflags} -Wall -I. -fPIC" LDFLAGS="%{ldflags}" soname='libaio.so.1.0.0' libname='libaio.so.1.0.0'
 cd ..
-%make_build CC=%{__cc} CFLAGS="%{optflags} -Wall -I. -fPIC" LDFLAGS="${ldflags}"
+%make_build CC=%{__cc} CFLAGS="%{optflags} -Wall -I. -fPIC" LDFLAGS="%{ldflags}"
 
 %install
 cd compat-%{name}-%{version}
 install -D -m 755 src/libaio.so.1.0.0 \
   %{buildroot}/%{_libdir}/libaio.so.1.0.0
 cd ..
-make destdir=%{buildroot} prefix=/ libdir=%{libdir} usrlibdir=%{_libdir} \
-    includedir=%{_includedir} install
+%make_install libdir=%{_libdir}
+#make destdir=%{buildroot} prefix=/ libdir=%{libdir} usrlibdir=%{_libdir} \
+#    includedir=%{_includedir} install
 
 %files -n %{libname}
 %{_libdir}/libaio.so.%{major}*
