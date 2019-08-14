@@ -11,7 +11,6 @@ License:	LGPLv2+
 Group:		System/Libraries
 Url:		https://pagure.io/libaio
 Source0:	https://pagure.io/libaio/archive/libaio-%{version}/%{name}-%{version}.tar.gz
-Patch1:		libaio-remove-nostartfiles-nostdlib-from-build-flags.patch
 
 %description
 The Linux-native asynchronous I/O facility ("async I/O", or "aio") has a
