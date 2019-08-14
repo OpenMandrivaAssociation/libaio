@@ -2,6 +2,9 @@
 %define libname %mklibname aio %{major}
 %define devname %mklibname aio -d
 %define staticname %mklibname aio -d -s
+%ifarch %{armx}
+%define _disable_lto %nil
+%endif
 
 Summary:	Linux-native asynchronous I/O access library
 Name:		libaio
