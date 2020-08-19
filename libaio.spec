@@ -9,7 +9,7 @@
 Summary:	Linux-native asynchronous I/O access library
 Name:		libaio
 Version:	0.3.112
-Release:	2
+Release:	3
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		https://pagure.io/libaio
@@ -62,7 +62,7 @@ This archive contains the static library files for %{name} development.
 mv %{name}-%{version} compat-%{name}-%{version}
 
 %build
-%setup_compile_flags
+%set_build_flags
 # A library with a soname of 1.0.0 was inadvertantly released.  This
 # build process builds a version of the library with the broken soname in
 # the compat-libaio-0.3.103 directory, and then builds the library again
