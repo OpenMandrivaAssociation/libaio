@@ -2,14 +2,14 @@
 %define libname %mklibname aio %{major}
 %define devname %mklibname aio -d
 %define staticname %mklibname aio -d -s
-%ifarch %{armx}
-%define _disable_lto %nil
-%endif
+# (tpg) This package uses ASMs to implement symbol versioning and is thus
+# incompatible with LTO
+%define _disable_lto 1
 
 Summary:	Linux-native asynchronous I/O access library
 Name:		libaio
 Version:	0.3.112
-Release:	3
+Release:	4
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		https://pagure.io/libaio
@@ -68,9 +68,9 @@ mv %{name}-%{version} compat-%{name}-%{version}
 # the compat-libaio-0.3.103 directory, and then builds the library again
 # with the correct soname.
 cd compat-%{name}-%{version}
-%make_build CC=%{__cc} CFLAGS="%{optflags} -Wall -I. -fPIC" LDFLAGS="%{ldflags}" soname='libaio.so.1.0.0' libname='libaio.so.1.0.0'
+%make_build CC=%{__cc} CFLAGS="%{optflags} -Wall -I. -fPIC" LDFLAGS="%{build_ldflags}" soname='libaio.so.1.0.0' libname='libaio.so.1.0.0'
 cd ..
-%make_build CC=%{__cc} CFLAGS="%{optflags} -Wall -I. -fPIC" LDFLAGS="%{ldflags}"
+%make_build CC=%{__cc} CFLAGS="%{optflags} -Wall -I. -fPIC" LDFLAGS="%{build_ldflags}"
 
 %install
 cd compat-%{name}-%{version}
