@@ -8,8 +8,8 @@
 
 Summary:	Linux-native asynchronous I/O access library
 Name:		libaio
-Version:	0.3.112
-Release:	4
+Version:	0.3.113
+Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		https://pagure.io/libaio
