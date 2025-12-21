@@ -15,6 +15,7 @@ Group:		System/Libraries
 Url:		https://pagure.io/libaio
 Source0:	https://pagure.io/libaio/archive/libaio-%{version}/%{name}-%{version}.tar.gz
 
+BuildRequires:	make
 %description
 The Linux-native asynchronous I/O facility ("async I/O", or "aio") has a
 richer API and capability set than the simple POSIX async I/O facility.
